@@ -17,71 +17,57 @@ import java.util.List;
 public class ClassUtils {
 
     /**
-     * 清空方法体：用简单的 return/throw 替换
+     * 清空方法体：直接构造 return 指令，整体替换 Code 属性
+     * <p>
+     * 不走 javassist 的源码编译(setBody)，因此：
+     * 1. 不需要把参数/返回类型解析成 CtClass —— 不会因为 ClassPool 里缺类而失败
+     * 2. 新方法体是一条直线(没有分支) —— 字节码校验不需要 StackMapTable，
+     *    因此不受 Lambda / 其他复杂控制流的影响
+     *
+     * @param m javassist的方法
      */
     private static void clearMethodBodyDirect(CtMethod m) throws Exception {
-        CtClass returnType = m.getReturnType();
-        String returnTypeName = returnType.getName();
-        
-        // 根据返回类型生成简单的return语句
-        // 注意：long/float/double 不能用 return 0，否则生成 ireturn，与返回类型不符，
-        // 会导致字节码校验失败：VerifyError: Bad return type
-        String newBody;
-        if ("void".equals(returnTypeName)) {
-            newBody = "{ return; }";
-        } else if ("boolean".equals(returnTypeName)) {
-            newBody = "{ return false; }";
-        } else if ("long".equals(returnTypeName)) {
-            newBody = "{ return 0L; }";
-        } else if ("float".equals(returnTypeName)) {
-            newBody = "{ return 0F; }";
-        } else if ("double".equals(returnTypeName)) {
-            newBody = "{ return 0D; }";
-        } else if ("byte".equals(returnTypeName) || "short".equals(returnTypeName)
-                || "int".equals(returnTypeName) || "char".equals(returnTypeName)) {
-            newBody = "{ return 0; }";
-        } else {
-            newBody = "{ return null; }";
+        MethodInfo mi = m.getMethodInfo();
+        CodeAttribute ca = mi.getCodeAttribute();
+        if (ca == null) {
+            //没有方法体(abstract/native/接口)
+            return;
         }
-        
-        // 使用Javassist的setBody，但不重建StackMapTable
-        m.setBody(newBody);
-    }
 
-    /**
-     * 判断类是否安全可清空方法体
-     * 安全类特征：
-     * 1. 常量类（类名包含Const/Constant）
-     * 2. 简单POJO（类名包含DTO/VO/Entity/Model/Bean/Info/Data）
-     * 注意：枚举类不能清空（Jackson/框架依赖values()方法）
-     */
-    private static boolean isSafeToClean(CtClass cc) throws Exception {
-        String className = cc.getSimpleName();
-        
-        // 枚举类不安全（依赖values()/valueOf()等方法）
-        if (cc.isEnum()) {
-            return false;
+        ConstPool cp = mi.getConstPool();
+        String descriptor = mi.getDescriptor();
+        //方法返回类型描述符
+        String ret = descriptor.substring(descriptor.lastIndexOf(')') + 1);
+
+        //按返回类型构造 return 指令，字节码必须与返回类型严格匹配
+        byte[] code;
+        int maxStack;
+        if ("V".equals(ret)) {
+            code = new byte[]{(byte) Opcode.RETURN};
+            maxStack = 0;
+        } else if ("J".equals(ret)) {
+            code = new byte[]{(byte) Opcode.LCONST_0, (byte) Opcode.LRETURN};
+            maxStack = 2;
+        } else if ("D".equals(ret)) {
+            code = new byte[]{(byte) Opcode.DCONST_0, (byte) Opcode.DRETURN};
+            maxStack = 2;
+        } else if ("F".equals(ret)) {
+            code = new byte[]{(byte) Opcode.FCONST_0, (byte) Opcode.FRETURN};
+            maxStack = 1;
+        } else if ("Z".equals(ret) || "B".equals(ret) || "C".equals(ret)
+                || "S".equals(ret) || "I".equals(ret)) {
+            code = new byte[]{(byte) Opcode.ICONST_0, (byte) Opcode.IRETURN};
+            maxStack = 1;
+        } else {
+            code = new byte[]{(byte) Opcode.ACONST_NULL, (byte) Opcode.ARETURN};
+            maxStack = 1;
         }
-        
-        // 注解类安全
-        if (cc.isAnnotation()) {
-            return true;
-        }
-        
-        // 常量类（类名包含Const/Constant）
-        if (className.contains("Const") || className.contains("Constant")) {
-            return true;
-        }
-        
-        // POJO/DTO/VO等数据类
-        String[] safePatterns = {"DTO", "VO", "Entity", "Model", "Bean", "Info", "Data", "Param", "Request", "Response"};
-        for (String pattern : safePatterns) {
-            if (className.contains(pattern)) {
-                return true;
-            }
-        }
-        
-        return false;
+
+        //保留原 maxLocals(参数槽位)，异常表置空
+        CodeAttribute newCode = new CodeAttribute(cp, maxStack, ca.getMaxLocals(),
+                code, new ExceptionTable(cp));
+        mi.removeCodeAttribute();
+        mi.setCodeAttribute(newCode);
     }
 
     /**
@@ -95,12 +81,7 @@ public class ClassUtils {
         String name = null;
         try {
             CtClass cc = pool.getCtClass(classname);
-            
-            // 只清空安全的类（常量/枚举/POJO等）
-            if (!isSafeToClean(cc)) {
-                return cc.toBytecode();
-            }
-            
+
             CtMethod[] methods = cc.getDeclaredMethods();
 
             for (CtMethod m : methods) {

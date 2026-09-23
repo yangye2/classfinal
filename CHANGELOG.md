@@ -1,5 +1,36 @@
 **Changelog**
 
+# 2.0.5
+
+## 修复 🐛
+
+### 方法体清空失效（严重）
+- 🐛 修复 `ClassUtils.rewriteAllMethods()` 里的 `isSafeToClean()` 白名单：
+  它只放行类名包含 `Const`/`Constant`/`DTO`/`VO`/`Entity`/`Model`/`Bean`/`Info`/`Data`/`Param`/`Request`/`Response`
+  的类，其余类直接返回原始字节码 —— **方法体根本没被清空**，
+  导致 Controller / Service / Util 等业务类在 jar 中完全暴露，反编译即可看到源码。
+- 🐛 修复 `JarEncryptor.encryptClass()` 与 `clearClassMethod()` 跳过含 Lambda 表达式类的问题：
+  密文区只写入部分类，被跳过的类在 jar 中保持原样。
+
+## 技术改进 📝
+
+- `ClassUtils.clearMethodBodyDirect()` 重写：不再用 javassist 编译源码（`setBody`），
+  改为按方法返回类型直接构造 `return` 指令并整体替换 `Code` 属性。
+  - 不再需要把参数/返回类型解析为 `CtClass`，避免 ClassPool 缺类导致的清空失败
+  - 新方法体不含分支，字节码校验不再需要 StackMapTable，从根本上避开 Lambda 的重建问题
+- 移除 `isSafeToClean()` 白名单，所有类统一清空方法体
+  （接口/注解/仅含构造方法的类天然没有方法体，不受影响）
+
+## 效果 📊
+
+以 Spring Boot 3.5 实际项目（367 个业务类）为例：
+
+| 指标 | 2.0.4 | 2.0.5 |
+| --- | --- | --- |
+| 加密的类 | 211 | 367 |
+| jar 中方法体被清空 | 13 | 292 |
+| 加密包启动 | 正常 | 正常（0 ERROR） |
+
 # 2.0.3
 
 ## 修复 🐛

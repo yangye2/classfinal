@@ -212,27 +212,17 @@ public class JarEncryptor {
             IoUtils.writeFile(configCode, StrUtils.toBytes(EncryptUtils.md5(this.code)));
         }
 
-        //加密另存 - 跳过包含Lambda的类以避免StackMapTable重建问题
+        //加密另存
         ProgressBar progress = new ProgressBar("加密类文件", classFiles.size());
-        int skippedLambdaCount = 0;
-        
+
         for (File classFile : classFiles) {
             String className = classFile.getName();
             if (className.endsWith(".class")) {
                 className = resolveClassName(classFile.getAbsolutePath(), true);
             }
-            
+
             byte[] bytes = IoUtils.readFileToByte(classFile);
-            
-            // 检测是否包含Lambda表达式
-            if (ByteCodeAnalyzer.containsLambda(bytes)) {
-                Log.debug("跳过包含Lambda的类: " + className);
-                skippedLambdaCount++;
-                progress.increment();
-                progress.display();
-                continue; // 不加密该类
-            }
-            
+
             // 加密类文件
             char[] pass = StrUtils.merger(this.password, className.toCharArray());
             bytes = EncryptUtils.en(bytes, pass, Const.ENCRYPT_TYPE);
@@ -253,11 +243,6 @@ public class JarEncryptor {
             Log.debug("加密：" + className);
         }
         
-        // 输出统计信息
-        if (skippedLambdaCount > 0) {
-            Log.println("\n跳过了 " + skippedLambdaCount + " 个包含Lambda表达式的类（避免StackMapTable问题）");
-        }
-
         //加密密码hash存储，用来验证密码是否正确
         char[] pchar = EncryptUtils.md5(StrUtils.merger(this.password, EncryptUtils.SALT));
         pchar = EncryptUtils.md5(StrUtils.merger(EncryptUtils.SALT, pchar));
@@ -300,18 +285,11 @@ public class JarEncryptor {
 
         });
 
-        //[2]修改class方法体，并保存文件（跳过Lambda类）
+        //[2]修改class方法体，并保存文件
         classFiles.forEach(classFile -> {
             //解析出类全名
             String className = resolveClassName(classFile.getAbsolutePath(), true);
-            
-            // 检测是否包含Lambda，跳过清空方法体
-            byte[] classBytes = IoUtils.readFileToByte(classFile);
-            if (ByteCodeAnalyzer.containsLambda(classBytes)) {
-                Log.debug("跳过清空Lambda类方法体: " + className);
-                return; // 不清空该类的方法体
-            }
-            
+
             byte[] bts = null;
             try {
                 Log.debug("清除方法体: " + className);
