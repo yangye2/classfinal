@@ -79,3 +79,9 @@ integration-test/*.classfinal.txt
 
 # Turbo AI Rules - Auto-generated files
 .github/copilot-instructions.md
+
+# 本地敏感/临时文件(勿提交)
+private-key.asc
+*.asc
+*.gpg
+mintty.*.png

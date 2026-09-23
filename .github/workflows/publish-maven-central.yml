@@ -1,0 +1,68 @@
+name: Publish to Maven Central
+
+# 发布到 Maven Central（Sonatype Central Portal）
+#   制品地址：https://central.sonatype.com/  → 搜索 io.github.yangye2
+#
+# 触发方式：
+#   1) 推送 v* 标签自动发布
+#   2) 在 Actions 页面手动 Run workflow
+#
+# 需要先在仓库 Settings → Secrets and variables → Actions 配置 4 个 Secret：
+#   SONATYPE_USERNAME  Central Portal 的 User Token Username
+#   SONATYPE_PASSWORD  Central Portal 的 User Token Password
+#   GPG_PRIVATE_KEY    GPG 私钥内容（gpg --armor --export-secret-keys <KEY_ID>）
+#   GPG_PASSPHRASE     GPG 私钥的 passphrase
+#
+# 说明：pom.xml 的 release profile 已配置 sources/javadoc/gpg 及
+#       central-publishing-maven-plugin（autoPublish=true，上传校验通过后自动发布）。
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Publish to Maven Central
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # 允许创建 GitHub Release
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: maven
+          server-id: central
+          server-username: SONATYPE_USERNAME
+          server-password: SONATYPE_PASSWORD
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Show version
+        run: mvn -B -q help:evaluate -Dexpression=project.version -DforceStdout
+
+      - name: Publish to Maven Central
+        run: mvn -B -DskipTests deploy -P release
+        env:
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            classfinal-fatjar/target/classfinal-fatjar-*.jar
+            classfinal-maven-plugin/target/classfinal-maven-plugin-*.jar
+          generate_release_notes: true

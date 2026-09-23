@@ -60,15 +60,19 @@
         </developer>
     </developers>
 
+    <!-- Maven Central 发布说明：
+         正式版（非 SNAPSHOT）由 release profile 里的 central-publishing-maven-plugin
+         打包上传到 Central Portal，不走这里的 <repository>，所以不再保留
+         已退役的 OSSRH 地址（s01.oss.sonatype.org）。
+         下面只留 -SNAPSHOT 的仓库地址（Central Portal 快照仓库）。
+         注：当前插件版本 0.4.0 不支持直接发 SNAPSHOT；如需发布快照，
+         要么把插件升到 >= 0.7.0，要么依赖这里的 distributionManagement。 -->
     <distributionManagement>
         <snapshotRepository>
             <id>central</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+            <name>Central Portal Snapshots</name>
+            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
         </snapshotRepository>
-        <repository>
-            <id>central</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
     </distributionManagement>
 
     <build>
