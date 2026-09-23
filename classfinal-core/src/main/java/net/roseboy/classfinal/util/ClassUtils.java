@@ -24,15 +24,21 @@ public class ClassUtils {
         String returnTypeName = returnType.getName();
         
         // 根据返回类型生成简单的return语句
+        // 注意：long/float/double 不能用 return 0，否则生成 ireturn，与返回类型不符，
+        // 会导致字节码校验失败：VerifyError: Bad return type
         String newBody;
         if ("void".equals(returnTypeName)) {
             newBody = "{ return; }";
         } else if ("boolean".equals(returnTypeName)) {
             newBody = "{ return false; }";
-        } else if ("byte".equals(returnTypeName) || "short".equals(returnTypeName) 
-                || "int".equals(returnTypeName) || "long".equals(returnTypeName)
-                || "float".equals(returnTypeName) || "double".equals(returnTypeName)
-                || "char".equals(returnTypeName)) {
+        } else if ("long".equals(returnTypeName)) {
+            newBody = "{ return 0L; }";
+        } else if ("float".equals(returnTypeName)) {
+            newBody = "{ return 0F; }";
+        } else if ("double".equals(returnTypeName)) {
+            newBody = "{ return 0D; }";
+        } else if ("byte".equals(returnTypeName) || "short".equals(returnTypeName)
+                || "int".equals(returnTypeName) || "char".equals(returnTypeName)) {
             newBody = "{ return 0; }";
         } else {
             newBody = "{ return null; }";

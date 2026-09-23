@@ -1,0 +1,48 @@
+name: Publish to GitHub Packages
+
+# 发布到自己的 GitHub Packages（Maven 仓库）：
+#   https://maven.pkg.github.com/yangye2/classfinal
+#
+# 触发方式：
+#   1) 推送 v* 标签自动发布
+#   2) 在 Actions 页面手动 Run workflow
+#
+# 说明：使用 Actions 内置的 GITHUB_TOKEN，无需配置任何密钥；
+#       setup-java 会自动把凭据写入 settings.xml（server id = github，
+#       与 pom.xml 中 github-packages profile 的 distributionManagement id 一致）。
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Publish Maven artifacts
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: maven
+          server-id: github
+          server-username: GITHUB_ACTOR
+          server-password: GITHUB_TOKEN
+
+      - name: Show version
+        run: mvn -B -q help:evaluate -Dexpression=project.version -DforceStdout
+
+      - name: Publish to GitHub Packages
+        run: mvn -B -DskipTests deploy -Pgithub-packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

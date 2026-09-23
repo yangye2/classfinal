@@ -186,7 +186,9 @@ public class JarUtils {
             }
             
             // 保存entry顺序记录
-            JAR_ENTRY_ORDER.put(targetDir, entryOrder);
+            // 注意：不能覆盖已有记录。addClassFinalAgent() 会用同一个 targetDir 释放 agent 自己的类，
+            // 若在此处覆盖，主 jar 的条目顺序会丢失，重打包时退化成字母序（会改变 BOOT-INF/lib 的加载优先级）
+            JAR_ENTRY_ORDER.putIfAbsent(targetDir, entryOrder);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -273,6 +275,11 @@ public class JarUtils {
 
         if (path.startsWith("jar:") || path.startsWith("war:")) {
             path = path.substring(4);
+        }
+        //Spring Boot 3.2+ 嵌套 jar 的 URL 形如 jar:nested:/path/app.jar/!BOOT-INF/classes!/，
+        //不处理 nested: 前缀会得到非法路径，导致 agent 解密全部失败（应用静默跑在空壳类上）
+        if (path.startsWith("nested:")) {
+            path = path.substring(7);
         }
         if (path.startsWith("file:")) {
             path = path.substring(5);

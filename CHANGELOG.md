@@ -1,5 +1,38 @@
 **Changelog**
 
+# 2.0.3
+
+## 修复 🐛
+
+### Spring Boot 3.2+ 嵌套 jar 路径解析（严重）
+- 🐛 修复 `JarUtils.getRootPath()` 不识别 `jar:nested:` URL 前缀的问题。
+  Spring Boot 3.2+ 的类来源形如 `jar:nested:/path/app.jar/!BOOT-INF/classes!/`，
+  截取后得到非法路径，导致 agent 找不到 jar、`doDecrypt` 返回 null，
+  类转换器静默放行——**应用实际跑在被清空方法体的空壳类上**（getter 返回 null、
+  boolean 返回 false），只在遇到非法桩类时才报错，非常难排查。
+- ✅ 增加 `nested:` 前缀处理后，解密恢复正常，可正常启动 Spring Boot 3.5 应用。
+
+### 重打包丢失 jar 条目顺序
+- 🐛 修复 `JarUtils.unJar()` 覆盖条目顺序记录的问题：
+  `addClassFinalAgent()` 会用同一个 `targetDir` 释放 agent 自身的类，
+  把主 jar 的条目顺序记录覆盖成 agent jar 的顺序，
+  导致主 jar 的 `BOOT-INF/lib/*` 查不到记录、退化为字母序重排。
+  后果是依赖加载优先级改变：若某个依赖内嵌了重复类（例如监管 SDK 里内嵌旧版 hutool），
+  会抢先加载导致 `NoSuchMethodError`。
+- ✅ 改为 `putIfAbsent`，保留原 jar 的条目顺序。
+
+### 清空方法体产生非法字节码
+- 🐛 修复 `ClassUtils.clearMethodBodyDirect()` 对 `long` / `float` / `double`
+  返回值也生成 `{ return 0; }` 的问题（编译成 `ireturn`，与返回类型不符），
+  导致 `VerifyError: Bad return type`。
+- ✅ 按返回类型分别生成 `0L` / `0F` / `0D`，桩类字节码合法。
+
+## 技术改进 📝
+
+- `JarUtils.getRootPath()` 兼容 Spring Boot 3.2+ 的嵌套 jar URL 格式
+- `JarUtils.unJar()` 条目顺序记录改为不覆盖
+- `ClassUtils.clearMethodBodyDirect()` 按返回类型生成对应的 return 字面量
+
 # 2.0.2
 
 ## 修复 🐛
