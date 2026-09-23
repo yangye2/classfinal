@@ -1,6 +1,6 @@
 # ClassFinal
 
-[![Maven Central](https://img.shields.io/badge/Maven%20Central-2.0.2-blue.svg)](https://central.sonatype.com/artifact/io.github.ygqygq2/classfinal/2.0.2)
+[![Maven Central](https://img.shields.io/badge/Maven%20Central-2.0.5-blue.svg)](https://central.sonatype.com/artifact/io.github.yangye2/classfinal-maven-plugin/2.0.5)
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
 [![Java](https://img.shields.io/badge/Java-1.8+-orange.svg)](https://www.oracle.com/java/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://github.com/ygqygq2/classfinal/pkgs/container/classfinal%2Fclassfinal)
@@ -18,7 +18,7 @@ ClassFinal 是一款 Java class 文件加密工具，支持直接加密 jar 包�
 - 🔑 **灵活解密**: 支持密码、环境变量、机器码绑定等多种方式
 
 **项目链接**:
-- GitHub: https://github.com/ygqygq2/classfinal
+- GitHub: https://github.com/yangye2/classfinal
 - 原项目: https://gitee.com/roseboy/classfinal
 
 ## 文档
@@ -41,9 +41,9 @@ docker pull ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
 **Maven 插件**:
 ```xml
 <plugin>
-    <groupId>io.github.ygqygy2</groupId>
+    <groupId>io.github.yangye2</groupId>
     <artifactId>classfinal-maven-plugin</artifactId>
-    <version>2.0.2</version>
+    <version>2.0.5</version>
 </plugin>
 ```
 
@@ -64,9 +64,9 @@ docker run --rm \
 **Maven 插件方式**:
 ```xml
 <plugin>
-    <groupId>io.github.ygqygq2</groupId>
+    <groupId>io.github.yangye2</groupId>
     <artifactId>classfinal-maven-plugin</artifactId>
-    <version>2.0.2</version>
+    <version>2.0.5</version>
     <configuration>
         <password>yourpassword</password>
         <packages>com.example</packages>
@@ -224,7 +224,7 @@ A: 无法恢复，请务必备份密码。
 **Q: 支持哪些加密算法？**  
 A: 当前使用 AES-256，可扩展支持其他算法。
 
-更多问题见 [Issues](https://github.com/ygqygq2/classfinal/issues)
+更多问题见 [Issues](https://github.com/yangye2/classfinal/issues)
 
 ## 版本历史
 
@@ -247,5 +247,5 @@ A: 当前使用 AES-256，可扩展支持其他算法。
 
 ---
 
-**维护者**: [@ygqygq2](https://github.com/ygqygq2)  
+**维护者**: [@yangye2](https://github.com/yangye2)  
 **Star ⭐ 支持**: 如果这个项目对你有帮助，请给个 Star！
