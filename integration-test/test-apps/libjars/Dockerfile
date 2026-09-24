@@ -34,7 +34,7 @@ FROM eclipse-temurin:8-jre-alpine
 
 LABEL maintainer="ygqygq2"
 LABEL description="ClassFinal 集成测试应用"
-LABEL org.opencontainers.image.source="https://github.com/ygqygq2/classfinal"
+LABEL org.opencontainers.image.source="https://github.com/yangye2/classfinal"
 LABEL org.opencontainers.image.description="ClassFinal Integration Test Application"
 
 WORKDIR /app

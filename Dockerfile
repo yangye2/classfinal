@@ -36,11 +36,11 @@ RUN mvn clean install -DskipTests -Dgpg.skip=true -B -q -Dorg.slf4j.simpleLogger
 # 运行时镜像
 FROM eclipse-temurin:8-jre-alpine
 
-LABEL org.opencontainers.image.source="https://github.com/ygqygq2/classfinal"
+LABEL org.opencontainers.image.source="https://github.com/yangye2/classfinal"
 LABEL org.opencontainers.image.description="ClassFinal - Java 类文件加密工具"
 LABEL maintainer="ygqygq2"
 LABEL version="2.0.0"
-LABEL org.opencontainers.image.source="https://github.com/ygqygq2/classfinal"
+LABEL org.opencontainers.image.source="https://github.com/yangye2/classfinal"
 LABEL org.opencontainers.image.description="ClassFinal - Java Class Encryption Tool"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
 

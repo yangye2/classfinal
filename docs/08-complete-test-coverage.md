@@ -215,14 +215,14 @@
 ### 本地测试
 
 ```bash
-cd /data/git/ygqygq2/classfinal
+cd /data/git/yangye2/classfinal
 bash integration-test/run-local-tests.sh
 ```
 
 ### CI 测试
 
 ```bash
-cd /data/git/ygqygq2/classfinal
+cd /data/git/yangye2/classfinal
 bash integration-test/run-ci-tests.sh
 ```
 

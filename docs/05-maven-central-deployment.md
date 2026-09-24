@@ -95,7 +95,7 @@ gpg --keyserver pgp.mit.edu --send-keys ABCDEF1234567890
 
 在 GitHub 仓库设置中添加以下 Secrets：
 
-1. 进入仓库页面：https://github.com/ygqygq2/classfinal
+1. 进入仓库页面：https://github.com/yangye2/classfinal
 2. 点击 "Settings" → "Secrets and variables" → "Actions"
 3. 点击 "New repository secret" 添加以下密钥：
 
@@ -188,7 +188,7 @@ git push origin master
 ### 检查 SNAPSHOT 版本
 
 - SNAPSHOT 仓库：https://s01.oss.sonatype.org/content/repositories/snapshots/
-- 访问路径：`io/github/ygqygq2/classfinal-core/`
+- 访问路径：`io/github/yangye2/classfinal-core/`
 
 ### 检查 Release 版本
 

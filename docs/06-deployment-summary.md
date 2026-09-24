@@ -103,7 +103,7 @@ mvn clean verify -DskipTests -P release
 ### SNAPSHOT 版本
 
 - 仓库: https://s01.oss.sonatype.org/content/repositories/snapshots/
-- 路径: `io/github/ygqygq2/classfinal-core/`
+- 路径: `io/github/yangye2/classfinal-core/`
 
 ### Release 版本
 

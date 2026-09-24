@@ -19,7 +19,7 @@
 ### 克隆项目
 
 ```bash
-git clone git@github.com:ygqygq2/classfinal.git
+git clone git@github.com:yangye2/classfinal.git
 cd classfinal
 ```
 
@@ -512,7 +512,7 @@ docker-compose up --abort-on-container-exit
 
 ## 联系方式
 
-- **项目主页**: https://github.com/ygqygq2/classfinal
+- **项目主页**: https://github.com/yangye2/classfinal
 - **问题反馈**: https://github.com/yangye2/classfinal/issues
 - **维护者**: ygqygq2
 

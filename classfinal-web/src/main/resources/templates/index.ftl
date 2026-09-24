@@ -296,7 +296,7 @@ java -javaagent:your-app-encrypted.jar='-pwd yourpassword' -jar your-app-encrypt
         </div>
 
         <div class="footer">
-            <p>ClassFinal 2.0.2 | <a href="https://github.com/ygqygq2/classfinal" target="_blank">GitHub</a></p>
+            <p>ClassFinal 2.0.2 | <a href="https://github.com/yangye2/classfinal" target="_blank">GitHub</a></p>
         </div>
     </div>
 

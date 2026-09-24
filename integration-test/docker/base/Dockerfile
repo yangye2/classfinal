@@ -1,6 +1,6 @@
 FROM busybox:latest
 
-LABEL org.opencontainers.image.source="https://github.com/ygqygq2/classfinal"
+LABEL org.opencontainers.image.source="https://github.com/yangye2/classfinal"
 LABEL org.opencontainers.image.description="ClassFinal Integration Test Base Image"
 LABEL maintainer="ygqygq2"
 

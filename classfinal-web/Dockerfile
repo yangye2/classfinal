@@ -48,7 +48,7 @@ RUN if [ -n "$VERSION" ]; then \
 # 运行时镜像
 FROM eclipse-temurin:21-jre-alpine
 
-LABEL org.opencontainers.image.source="https://github.com/ygqygq2/classfinal"
+LABEL org.opencontainers.image.source="https://github.com/yangye2/classfinal"
 LABEL org.opencontainers.image.description="ClassFinal Web UI"
 LABEL maintainer="ygqygq2"
 

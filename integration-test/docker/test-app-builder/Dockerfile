@@ -4,7 +4,7 @@ FROM maven:3.8-openjdk-8
 
 ARG USE_CHINA_MIRROR=true
 
-LABEL org.opencontainers.image.source="https://github.com/ygqygq2/classfinal"
+LABEL org.opencontainers.image.source="https://github.com/yangye2/classfinal"
 LABEL org.opencontainers.image.description="ClassFinal Test Application Build Environment"
 LABEL maintainer="ygqygq2"
 

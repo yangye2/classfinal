@@ -5,7 +5,7 @@
 ClassFinal 是一个 Java 类文件加密工具，通过 AES 加密算法保护 Java 应用的字节码，防止反编译。
 
 - **原始项目**: [roseboy/classfinal](https://github.com/roseboy/classfinal)
-- **维护分支**: [ygqygq2/classfinal](https://github.com/ygqygq2/classfinal)
+- **维护分支**: [yangye2/classfinal](https://github.com/yangye2/classfinal)
 - **维护者**: ygqygq2
 - **版本**: 2.0.0
 - **JDK 版本**: 1.8+
