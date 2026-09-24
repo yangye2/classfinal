@@ -3,7 +3,6 @@
 [![Maven Central](https://img.shields.io/badge/Maven%20Central-2.0.5-blue.svg)](https://central.sonatype.com/artifact/io.github.yangye2/classfinal-maven-plugin/2.0.5)
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
 [![Java](https://img.shields.io/badge/Java-1.8+-orange.svg)](https://www.oracle.com/java/)
-[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://github.com/ygqygq2/classfinal/pkgs/container/classfinal%2Fclassfinal)
 
 > Java class 文件安全加密工具 - 防止反编译，保护源码安全
 
@@ -14,7 +13,6 @@ ClassFinal 是一款 Java class 文件加密工具，支持直接加密 jar 包�
 - 🔒 **AES 加密**: 使用 AES 算法加密字节码
 - 🚀 **零侵入**: 无需修改项目代码
 - 🌱 **Spring 兼容**: 完全兼容 Spring Boot/Framework
-- 🐳 **容器化**: 提供 Docker 镜像，开箱即用
 - 🔑 **灵活解密**: 支持密码、环境变量、机器码绑定等多种方式
 
 **项目链接**:
@@ -24,7 +22,6 @@ ClassFinal 是一款 Java class 文件加密工具，支持直接加密 jar 包�
 ## 文档
 
 - 📖 [架构设计文档](docs/01-architecture-design.md) - 详细的架构设计和技术原理
-- 🐳 [Docker 使用指南](docs/02-docker-usage.md) - Docker 容器化部署和使用
 - 🛠️ [开发指南](docs/03-development-guide.md) - 开发环境配置和贡献指南
 - 🧪 [集成测试文档](docs/04-integration-testing.md) - 集成测试环境和测试流程
 - 📝 [更新日志](CHANGELOG.md) - 版本更新记录
@@ -32,11 +29,6 @@ ClassFinal 是一款 Java class 文件加密工具，支持直接加密 jar 包�
 ## 快速开始
 
 ### 下载
-
-**Docker 镜像**:
-```bash
-docker pull ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
-```
 
 **Maven 插件**:
 ```xml
@@ -48,18 +40,6 @@ docker pull ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
 ```
 
 ### 加密 JAR
-
-**Docker 方式**:
-```bash
-docker run --rm \
-  -v $(pwd):/data \
-  -e INPUT_FILE=/data/app.jar \
-  -e PACKAGES=com.example \
-  -e PASSWORD=yourpassword \
-  ghcr.io/ygqygq2/classfinal/classfinal:2.0.2 encrypt
-```
-
-生成 `app-encrypted.jar`。更多用法见 [Docker 使用指南](docs/02-docker-usage.md)
 
 **Maven 插件方式**:
 ```xml
