@@ -81,8 +81,8 @@
 ---
 
 有功能建议？欢迎：
-1. 提交 [Issue](https://github.com/ygqygq2/classfinal/issues) 说明需求和使用场景
-2. 在 [Discussions](https://github.com/ygqygq2/classfinal/discussions) 讨论可行性
+1. 提交 [Issue](https://github.com/yangye2/classfinal/issues) 说明需求和使用场景
+2. 在 [Discussions](https://github.com/yangye2/classfinal/discussions) 讨论可行性
 3. 提交 PR 实现功能（请先讨论避免浪费时间）
 
 **优先考虑的功能特点**：

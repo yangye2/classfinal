@@ -31,8 +31,8 @@ function Build_Docker_Images() {
     
     # 构建 ClassFinal 主镜像
     echo "  构建 classfinal:$version ..."
-    docker build -t "ghcr.io/ygqygq2/classfinal/classfinal:$version" \
-                 -t "ghcr.io/ygqygq2/classfinal/classfinal:latest" \
+    docker build -t "ghcr.io/yangye2/classfinal/classfinal:$version" \
+                 -t "ghcr.io/yangye2/classfinal/classfinal:latest" \
                  -f Dockerfile . || {
         echo "❌ ClassFinal 镜像构建失败"
         return 1
@@ -41,8 +41,8 @@ function Build_Docker_Images() {
     
     # 构建 ClassFinal Web 镜像
     echo "  构建 classfinal-web:$version ..."
-    docker build -t "ghcr.io/ygqygq2/classfinal/classfinal-web:$version" \
-                 -t "ghcr.io/ygqygq2/classfinal/classfinal-web:latest" \
+    docker build -t "ghcr.io/yangye2/classfinal/classfinal-web:$version" \
+                 -t "ghcr.io/yangye2/classfinal/classfinal-web:latest" \
                  -f classfinal-web/Dockerfile \
                  --build-arg VERSION="$version" \
                  . || {
@@ -57,10 +57,10 @@ function Build_Docker_Images() {
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         echo "推送镜像..."
-        docker push "ghcr.io/ygqygq2/classfinal/classfinal:$version"
-        docker push "ghcr.io/ygqygq2/classfinal/classfinal:latest"
-        docker push "ghcr.io/ygqygq2/classfinal/classfinal-web:$version"
-        docker push "ghcr.io/ygqygq2/classfinal/classfinal-web:latest"
+        docker push "ghcr.io/yangye2/classfinal/classfinal:$version"
+        docker push "ghcr.io/yangye2/classfinal/classfinal:latest"
+        docker push "ghcr.io/yangye2/classfinal/classfinal-web:$version"
+        docker push "ghcr.io/yangye2/classfinal/classfinal-web:latest"
         echo "✓ 镜像已推送"
     fi
 }
@@ -78,8 +78,8 @@ function Update_Version() {
     local docker_old="${old_version%-SNAPSHOT}"
     local docker_new="${new_version%-SNAPSHOT}"
     find . -name "docker-compose.yml" -type f | while read -r compose; do
-        sed -i "s|ghcr.io/ygqygq2/classfinal/classfinal:${docker_old}|ghcr.io/ygqygq2/classfinal/classfinal:${docker_new}|g" "$compose"
-        sed -i "s|ghcr.io/ygqygq2/classfinal/classfinal-web:${old_version}|ghcr.io/ygqygq2/classfinal/classfinal-web:${new_version}|g" "$compose"
+        sed -i "s|ghcr.io/yangye2/classfinal/classfinal:${docker_old}|ghcr.io/yangye2/classfinal/classfinal:${docker_new}|g" "$compose"
+        sed -i "s|ghcr.io/yangye2/classfinal/classfinal-web:${old_version}|ghcr.io/yangye2/classfinal/classfinal-web:${new_version}|g" "$compose"
     done
     
     # 更新 integration-test 中引用的 classfinal-maven-plugin 版本
@@ -157,7 +157,7 @@ function Main() {
     echo "✓ Tag 已推送"
     echo ""
     echo "🚀 GitHub Actions 正在发布..."
-    echo "   查看进度: https://github.com/ygqygq2/classfinal/actions"
+    echo "   查看进度: https://github.com/yangye2/classfinal/actions"
     echo ""
     
     # 可选: 本地构建 Docker 镜像
@@ -182,7 +182,7 @@ function Main() {
     echo ""
     echo "后续步骤:"
     echo "  1. 查看 GitHub Actions 发布进度"
-    echo "     https://github.com/ygqygq2/classfinal/actions"
+    echo "     https://github.com/yangye2/classfinal/actions"
     echo ""
     echo "  2. 确认发布成功后，提交并推送开发版本:"
     echo "     git add . && git commit -m 'chore: prepare for next development iteration $NEXT_VERSION' && git push"

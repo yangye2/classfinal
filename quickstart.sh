@@ -86,9 +86,9 @@ function Test_Original_App() {
 
 function Encrypt_App() {
     Print_Step "Step 3: 使用 ClassFinal Docker 镜像加密应用"
-    Print_Step "拉取镜像: ghcr.io/ygqygq2/classfinal/classfinal:2.0.0"
+    Print_Step "拉取镜像: ghcr.io/yangye2/classfinal/classfinal:2.0.0"
 
-    if ! docker pull ghcr.io/ygqygq2/classfinal/classfinal:2.0.0 2>&1 | grep -q "Status.*Downloaded\|Status.*up to date"; then
+    if ! docker pull ghcr.io/yangye2/classfinal/classfinal:2.0.0 2>&1 | grep -q "Status.*Downloaded\|Status.*up to date"; then
         Print_Error "镜像拉取失败"
         exit 1
     fi
@@ -98,7 +98,7 @@ function Encrypt_App() {
         -v "$TEMP_DIR:/data" \
         -w /data \
         --entrypoint java \
-        ghcr.io/ygqygq2/classfinal/classfinal:2.0.0 \
+        ghcr.io/yangye2/classfinal/classfinal:2.0.0 \
         -jar /app/app.jar \
         -file app.jar \
         -pwd demo123 \

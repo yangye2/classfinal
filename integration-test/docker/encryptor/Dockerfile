@@ -1,5 +1,5 @@
 # ClassFinal 加密器镜像
-FROM ghcr.io/ygqygq2/classfinal/classfinal:2.0.0 AS classfinal
+FROM ghcr.io/yangye2/classfinal/classfinal:2.0.0 AS classfinal
 FROM eclipse-temurin:8-jre
 
 LABEL maintainer="ygqygq2"

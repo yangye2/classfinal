@@ -168,7 +168,7 @@ mvn clean verify -DskipTests -P release
 
 4. **监控 GitHub Actions**
 
-   - 查看: https://github.com/ygqygq2/classfinal/actions
+   - 查看: https://github.com/yangye2/classfinal/actions
    - 确认部署成功
 
 5. **准备首次 Release**

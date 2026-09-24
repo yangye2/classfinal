@@ -174,7 +174,7 @@ ClassFinal 完整的测试覆盖说明，包含所有 19 个测试场景。
 ## 🔗 相关链接
 
 - **项目主页**: https://github.com/ygqygq2/classfinal
-- **问题反馈**: https://github.com/ygqygq2/classfinal/issues
+- **问题反馈**: https://github.com/yangye2/classfinal/issues
 - **原始项目**: https://gitee.com/roseboy/classfinal
 
 ## 📝 文档贡献

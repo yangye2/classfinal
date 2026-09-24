@@ -4,7 +4,7 @@ services:
     build:
       context: integration-test/docker/base
       dockerfile: Dockerfile
-    image: ghcr.io/ygqygq2/classfinal/base:latest
+    image: ghcr.io/yangye2/classfinal/base:latest
     container_name: base
     profiles:
       - build
@@ -18,7 +18,7 @@ services:
       dockerfile: integration-test/docker/test-app-builder/Dockerfile
       args:
         USE_CHINA_MIRROR: ${USE_CHINA_MIRROR:-true}
-    image: ghcr.io/ygqygq2/classfinal/test-app-builder:1.0.0
+    image: ghcr.io/yangye2/classfinal/test-app-builder:1.0.0
     container_name: test-app-builder-build
     profiles:
       - build
@@ -36,7 +36,7 @@ services:
       args:
         # 本地开发默认使用国内镜像源,CI 环境设置 USE_CHINA_MIRROR=false
         USE_CHINA_MIRROR: ${USE_CHINA_MIRROR:-true}
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     container_name: classfinal
     environment:
       - SONATYPE_USERNAME=${SONATYPE_USERNAME:-}
@@ -55,7 +55,7 @@ services:
       dockerfile: integration-test/test-app/Dockerfile
       args:
         USE_CHINA_MIRROR: ${USE_CHINA_MIRROR:-true}
-    image: ghcr.io/ygqygq2/classfinal/test-app:1.0.0
+    image: ghcr.io/yangye2/classfinal/test-app:1.0.0
     container_name: test-app-build
     profiles:
       - build
@@ -67,7 +67,7 @@ services:
 
   # 测试原始应用（基准测试）
   test-original:
-    image: ghcr.io/ygqygq2/classfinal/test-app:1.0.0
+    image: ghcr.io/yangye2/classfinal/test-app:1.0.0
     pull_policy: never
     container_name: test-original
     command: ["run"]
@@ -76,7 +76,7 @@ services:
 
   # 准备测试应用：将 test-app 镜像内的 jar 复制到共享卷
   prepare-test-app:
-    image: ghcr.io/ygqygq2/classfinal/test-app:1.0.0
+    image: ghcr.io/yangye2/classfinal/test-app:1.0.0
     pull_policy: never
     container_name: prepare-test-app
     command:
@@ -93,7 +93,7 @@ services:
       - test-network
   # 加密测试应用
   encrypt-app:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     pull_policy: never
     container_name: encrypt-app
     command: ["encrypt"]
@@ -141,7 +141,7 @@ services:
 
   # 测试：使用 JavaAgent 和密码运行加密应用（应该成功）
   test-encrypted-with-password:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     pull_policy: never
     container_name: test-encrypted-with-password
     command: ["agent"]
@@ -239,7 +239,7 @@ services:
 
   # 测试：使用错误密码运行加密应用（应该失败）
   test-encrypted-wrong-password:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     pull_policy: never
     container_name: test-encrypted-wrong-password
     volumes:
@@ -270,7 +270,7 @@ services:
 
   # 准备多包测试应用
   prepare-multipackage-test:
-    image: ghcr.io/ygqygq2/classfinal/test-app:1.0.0
+    image: ghcr.io/yangye2/classfinal/test-app:1.0.0
     pull_policy: never
     container_name: prepare-multipackage-test
     command:
@@ -287,7 +287,7 @@ services:
 
   # 测试：多包加密
   encrypt-multipackage:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     pull_policy: never
     container_name: encrypt-multipackage
     command: ["encrypt"]
@@ -306,7 +306,7 @@ services:
 
   # 测试：多包加密应用运行
   test-multipackage-encrypted:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     pull_policy: never
     container_name: test-multipackage-encrypted
     command: ["agent"]
@@ -323,7 +323,7 @@ services:
 
   # 测试：排除类名功能
   prepare-exclude-test:
-    image: ghcr.io/ygqygq2/classfinal/test-app:1.0.0
+    image: ghcr.io/yangye2/classfinal/test-app:1.0.0
     pull_policy: never
     container_name: prepare-exclude-test
     command:
@@ -339,7 +339,7 @@ services:
       - test-network
 
   encrypt-with-exclude:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     pull_policy: never
     container_name: encrypt-with-exclude
     command:
@@ -362,7 +362,7 @@ services:
       - test-network
 
   test-encrypted-with-exclude:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     pull_policy: never
     container_name: test-encrypted-with-exclude
     command: ["agent"]
@@ -379,7 +379,7 @@ services:
 
   # 测试：无密码模式
   prepare-nopwd-test:
-    image: ghcr.io/ygqygq2/classfinal/test-app:1.0.0
+    image: ghcr.io/yangye2/classfinal/test-app:1.0.0
     pull_policy: never
     container_name: prepare-nopwd-test
     command:
@@ -395,7 +395,7 @@ services:
       - test-network
 
   encrypt-nopwd:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     pull_policy: never
     container_name: encrypt-nopwd
     command:
@@ -417,7 +417,7 @@ services:
       - test-network
 
   test-encrypted-nopwd:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     pull_policy: never
     container_name: test-encrypted-nopwd
     command:
@@ -486,7 +486,7 @@ services:
         echo "构建并安装 Maven 插件（可能需要几分钟）..."
         mvn clean install -f pom.xml -pl classfinal-core,classfinal-maven-plugin -am -DskipTests -Dgpg.skip=true -B -q -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn 2>&1 | grep -v -E "^Downloading|^Downloaded|Progress \(|from central|from aliyunmaven" || true
         echo "✓ Maven 插件已安装到本地仓库"
-        ls -la /root/.m2/repository/io/github/ygqygq2/ || echo "安装可能失败"
+        ls -la /root/.m2/repository/io/github/yangye2/ || echo "安装可能失败"
         # 修复权限（Docker容器创建的文件为root所有）
         chmod -R 777 /workspace/classfinal-*/target /workspace/.m2 2>/dev/null || true
     volumes:
@@ -496,7 +496,7 @@ services:
       - test-network
 
   test-maven-plugin:
-    image: ghcr.io/ygqygq2/classfinal/test-app-builder:1.0.0
+    image: ghcr.io/yangye2/classfinal/test-app-builder:1.0.0
     pull_policy: never
     container_name: test-maven-plugin
     working_dir: /workspace/integration-test/test-apps/maven-plugin
@@ -516,7 +516,7 @@ services:
         fi
         # 检查 SNAPSHOT 是否已安装
         echo "检查 Maven 仓库中的 SNAPSHOT..."
-        ls -la /root/.m2/repository/io/github/ygqygq2/ || echo "目录不存在"
+        ls -la /root/.m2/repository/io/github/yangye2/ || echo "目录不存在"
         # 执行构建
         echo "正在构建（可能需要几分钟）..."
         mvn clean package -Dgpg.skip=true -B -q -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn 2>&1 | grep -v -E "^Downloading|^Downloaded|Progress \(|from central|from aliyunmaven" || true
@@ -569,7 +569,7 @@ services:
 
   # 准备：lib 依赖测试应用
   prepare-libjars-test:
-    image: ghcr.io/ygqygq2/classfinal/test-app-builder:1.0.0
+    image: ghcr.io/yangye2/classfinal/test-app-builder:1.0.0
     pull_policy: never
     container_name: prepare-libjars-test
     working_dir: /workspace/integration-test/test-apps/libjars
@@ -596,7 +596,7 @@ services:
 
   # 加密：使用 -libjars 参数加密 lib 依赖
   encrypt-with-libjars:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     container_name: encrypt-with-libjars
     command:
       - /bin/sh
@@ -642,7 +642,7 @@ services:
 
   # 准备：配置文件加密测试
   prepare-config-encryption:
-    image: ghcr.io/ygqygq2/classfinal/test-app-builder:1.0.0
+    image: ghcr.io/yangye2/classfinal/test-app-builder:1.0.0
     pull_policy: never
     container_name: prepare-config-encryption
     working_dir: /workspace/integration-test/test-apps/config-file
@@ -665,7 +665,7 @@ services:
 
   # 加密：加密配置文件
   encrypt-config-files:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     container_name: encrypt-config-files
     command:
       - /bin/sh
@@ -715,7 +715,7 @@ services:
 
   # 准备：机器码绑定测试
   prepare-machine-code:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     container_name: prepare-machine-code
     command:
       - /bin/sh
@@ -741,7 +741,7 @@ services:
 
   # 加密：使用机器码绑定
   encrypt-with-machine-code:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     container_name: encrypt-with-machine-code
     command:
       - /bin/sh
@@ -767,7 +767,7 @@ services:
 
   # 测试：在正确的机器上运行
   test-machine-code-correct:
-    image: ghcr.io/ygqygq2/classfinal/test-app:1.0.0
+    image: ghcr.io/yangye2/classfinal/test-app:1.0.0
     pull_policy: never
     container_name: test-machine-code-correct
     command:
@@ -789,7 +789,7 @@ services:
 
   # 准备：WAR 包测试应用
   prepare-war-test:
-    image: ghcr.io/ygqygq2/classfinal/test-app-builder:1.0.0
+    image: ghcr.io/yangye2/classfinal/test-app-builder:1.0.0
     pull_policy: never
     container_name: prepare-war-test
     working_dir: /workspace/integration-test/test-apps/war
@@ -813,7 +813,7 @@ services:
 
   # 加密：WAR 包加密
   encrypt-war:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     container_name: encrypt-war
     command:
       - /bin/sh
@@ -935,7 +935,7 @@ services:
         find /tmp/original -name "*.class" -type f | head -5
         
         # 反编译 TestApp（测试应用的实际主类）
-        java -jar /tmp/cfr.jar /tmp/original/io/github/ygqygq2/test/TestApp.class > /tmp/original-decompiled.java
+        java -jar /tmp/cfr.jar /tmp/original/io/github/yangye2/test/TestApp.class > /tmp/original-decompiled.java
 
         if grep -q "public static void main" /tmp/original-decompiled.java; then
           echo "✓ 原始 jar 可以反编译"
@@ -954,7 +954,7 @@ services:
         # 尝试反编译加密后的 jar
         echo "测试加密 jar 反编译..."
         unzip -q /data/app-encrypted.jar -d /tmp/encrypted
-        java -jar /tmp/cfr.jar /tmp/encrypted/io/github/ygqygq2/test/TestApp.class > /tmp/encrypted-decompiled.java 2>&1 || true
+        java -jar /tmp/cfr.jar /tmp/encrypted/io/github/yangye2/test/TestApp.class > /tmp/encrypted-decompiled.java 2>&1 || true
 
         echo "=== 原始反编译内容 ==="
         head -20 /tmp/original-decompiled.java
@@ -999,7 +999,7 @@ services:
   
   # 准备：配置文件参数测试
   prepare-config-param-test:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     pull_policy: never
     container_name: prepare-config-param-test
     command:
@@ -1020,7 +1020,7 @@ services:
 
   # 加密：使用配置文件参数
   encrypt-with-config-param:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     pull_policy: never
     container_name: encrypt-with-config-param
     command:
@@ -1047,7 +1047,7 @@ services:
 
   # 测试：配置文件加密应用运行
   test-config-param-encrypted:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     pull_policy: never
     container_name: test-config-param-encrypted
     command: ["agent"]
@@ -1070,7 +1070,7 @@ services:
 
   # 准备：密码文件参数测试
   prepare-password-file-test:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     pull_policy: never
     container_name: prepare-password-file-test
     command:
@@ -1093,7 +1093,7 @@ services:
 
   # 加密：使用密码文件参数
   encrypt-with-password-file:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     pull_policy: never
     container_name: encrypt-with-password-file
     command:
@@ -1125,7 +1125,7 @@ services:
 
   # 测试：密码文件加密应用运行
   test-password-file-encrypted:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     pull_policy: never
     container_name: test-password-file-encrypted
     command: ["agent"]
@@ -1148,7 +1148,7 @@ services:
 
   # 准备：验证功能测试
   prepare-verify-test:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     pull_policy: never
     container_name: prepare-verify-test
     command:
@@ -1168,7 +1168,7 @@ services:
 
   # 加密并验证
   encrypt-and-verify:
-    image: ghcr.io/ygqygq2/classfinal/classfinal:2.0.2
+    image: ghcr.io/yangye2/classfinal/classfinal:2.0.5
     pull_policy: never
     container_name: encrypt-and-verify
     command:

@@ -237,7 +237,7 @@ git push origin main
 1. 推送代码到 GitHub
 2. GitHub Actions 自动触发
 3. 运行 `run-ci-tests.sh`
-4. 查看测试结果: https://github.com/ygqygq2/classfinal/actions
+4. 查看测试结果: https://github.com/yangye2/classfinal/actions
 
 ## 性能优化
 

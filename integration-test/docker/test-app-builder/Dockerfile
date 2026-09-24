@@ -1,5 +1,5 @@
 # 测试应用构建镜像
-FROM ghcr.io/ygqygq2/classfinal/base:latest AS base
+FROM ghcr.io/yangye2/classfinal/base:latest AS base
 FROM maven:3.8-openjdk-8
 
 ARG USE_CHINA_MIRROR=true

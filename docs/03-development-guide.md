@@ -96,13 +96,13 @@ mvn clean install
 
 ```bash
 # 构建 ClassFinal 镜像
-docker build -t ghcr.io/ygqygq2/classfinal/classfinal:dev .
+docker build -t ghcr.io/yangye2/classfinal/classfinal:dev .
 
 # 使用国内镜像源（加快构建速度）
-docker build --build-arg USE_CHINA_MIRROR=true -t ghcr.io/ygqygq2/classfinal/classfinal:dev .
+docker build --build-arg USE_CHINA_MIRROR=true -t ghcr.io/yangye2/classfinal/classfinal:dev .
 
 # 构建测试应用
-docker build -f integration-test/test-app/Dockerfile -t ghcr.io/ygqygq2/classfinal/test-app:dev .
+docker build -f integration-test/test-app/Dockerfile -t ghcr.io/yangye2/classfinal/test-app:dev .
 
 # 使用 docker-compose 构建所有镜像
 docker-compose build
@@ -513,7 +513,7 @@ docker-compose up --abort-on-container-exit
 ## 联系方式
 
 - **项目主页**: https://github.com/ygqygq2/classfinal
-- **问题反馈**: https://github.com/ygqygq2/classfinal/issues
+- **问题反馈**: https://github.com/yangye2/classfinal/issues
 - **维护者**: ygqygq2
 
 ## 参考资料

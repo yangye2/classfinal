@@ -270,9 +270,9 @@ test-app 镜像内的 /app/app.jar
 
 ### 镜像命名规范
 
-- **ClassFinal 工具**: `ghcr.io/ygqygq2/classfinal/classfinal:latest`
-- **测试应用**: `ghcr.io/ygqygq2/classfinal/test-app:latest`
-- **Web 控制台**: `ghcr.io/ygqygq2/classfinal/web:latest`
+- **ClassFinal 工具**: `ghcr.io/yangye2/classfinal/classfinal:latest`
+- **测试应用**: `ghcr.io/yangye2/classfinal/test-app:latest`
+- **Web 控制台**: `ghcr.io/yangye2/classfinal/web:latest`
 
 标签策略：
 
